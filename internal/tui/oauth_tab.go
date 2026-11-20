@@ -517,7 +517,7 @@ func (m oauthTabModel) renderContent() string {
 
 		label := fmt.Sprintf("%s %s", p.emoji, p.name)
 		if isSelected {
-			label = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFFFFF")).Background(colorPrimary).Padding(0, 1).Render(label)
+			label = accentBadgeStyle.Render(label)
 		} else {
 			label = lipgloss.NewStyle().Foreground(colorText).Padding(0, 1).Render(label)
 		}
@@ -534,7 +534,7 @@ func (m oauthTabModel) renderContent() string {
 func (m oauthTabModel) renderRemoteMode() string {
 	var sb strings.Builder
 
-	providerStyle := lipgloss.NewStyle().Bold(true).Foreground(colorHighlight)
+	providerStyle := headingStyle
 	sb.WriteString(providerStyle.Render(fmt.Sprintf("  ✦ %s OAuth", m.providerName)))
 	sb.WriteString("\n\n")
 
@@ -543,7 +543,7 @@ func (m oauthTabModel) renderRemoteMode() string {
 	sb.WriteString("\n")
 
 	// Wrap URL to fit terminal width
-	urlStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("252"))
+	urlStyle := lipgloss.NewStyle().Foreground(colorText).Underline(true)
 	maxURLWidth := m.width - 6
 	if maxURLWidth < 40 {
 		maxURLWidth = 40
@@ -578,14 +578,14 @@ func (m oauthTabModel) renderRemoteMode() string {
 func (m oauthTabModel) renderDeviceMode() string {
 	var sb strings.Builder
 
-	providerStyle := lipgloss.NewStyle().Bold(true).Foreground(colorHighlight)
+	providerStyle := headingStyle
 	sb.WriteString(providerStyle.Render(fmt.Sprintf("  ✦ %s OAuth", m.providerName)))
 	sb.WriteString("\n\n")
 
 	sb.WriteString(lipgloss.NewStyle().Bold(true).Foreground(colorInfo).Render(T("oauth_auth_url")))
 	sb.WriteString("\n")
 
-	urlStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("252"))
+	urlStyle := lipgloss.NewStyle().Foreground(colorText).Underline(true)
 	maxURLWidth := m.width - 6
 	if maxURLWidth < 40 {
 		maxURLWidth = 40
@@ -598,7 +598,7 @@ func (m oauthTabModel) renderDeviceMode() string {
 	if strings.TrimSpace(m.userCode) != "" {
 		sb.WriteString(lipgloss.NewStyle().Bold(true).Foreground(colorInfo).Render(T("oauth_user_code")))
 		sb.WriteString("\n")
-		codeStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FFFFFF")).Background(colorPrimary).Padding(0, 1)
+		codeStyle := accentBadgeStyle
 		sb.WriteString("  " + codeStyle.Render(m.userCode) + "\n\n")
 	}
 

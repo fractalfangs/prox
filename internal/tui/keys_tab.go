@@ -319,7 +319,7 @@ func (m keysTabModel) renderContent() string {
 		rowStyle := lipgloss.NewStyle()
 		if i == m.cursor {
 			cursor = "▸ "
-			rowStyle = lipgloss.NewStyle().Bold(true)
+			rowStyle = lipgloss.NewStyle().Bold(true).Foreground(colorPrimary)
 		}
 
 		row := fmt.Sprintf("%s%d. %s", cursor, i+1, maskKey(key))

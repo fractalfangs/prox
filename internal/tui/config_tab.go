@@ -279,7 +279,7 @@ func (m configTabModel) renderContent() string {
 		if section != currentSection {
 			currentSection = section
 			sb.WriteString("\n")
-			sb.WriteString(lipgloss.NewStyle().Bold(true).Foreground(colorHighlight).Render("  ── " + section + " "))
+			sb.WriteString(headingStyle.Render("  ── " + section + " "))
 			sb.WriteString("\n")
 		}
 
@@ -290,7 +290,7 @@ func (m configTabModel) renderContent() string {
 		}
 
 		labelStr := lipgloss.NewStyle().
-			Foreground(colorInfo).
+			Foreground(colorSubtext).
 			Bold(isSelected).
 			Width(32).
 			Render(f.label)
@@ -313,10 +313,11 @@ func (m configTabModel) renderContent() string {
 			}
 		}
 
-		line := prefix + labelStr + "  " + valueStr
-		if isSelected && !m.editing {
-			line = lipgloss.NewStyle().Background(colorSurface).Render(line)
+		if isSelected {
+			prefix = lipgloss.NewStyle().Foreground(colorPrimary).Render(prefix)
+			labelStr = lipgloss.NewStyle().Foreground(colorPrimary).Bold(true).Width(32).Render(f.label)
 		}
+		line := prefix + labelStr + "  " + valueStr
 		sb.WriteString(line + "\n")
 	}
 

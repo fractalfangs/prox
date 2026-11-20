@@ -1,67 +1,72 @@
 // Package tui provides a terminal-based management interface for CLIProxyAPI.
 package tui
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"strings"
 
-// Color palette
-var (
-	colorPrimary   = lipgloss.Color("#7C3AED") // violet
-	colorSecondary = lipgloss.Color("#6366F1") // indigo
-	colorSuccess   = lipgloss.Color("#22C55E") // green
-	colorWarning   = lipgloss.Color("#EAB308") // yellow
-	colorError     = lipgloss.Color("#EF4444") // red
-	colorInfo      = lipgloss.Color("#3B82F6") // blue
-	colorMuted     = lipgloss.Color("#6B7280") // gray
-	colorBg        = lipgloss.Color("#1E1E2E") // dark bg
-	colorSurface   = lipgloss.Color("#313244") // slightly lighter
-	colorText      = lipgloss.Color("#CDD6F4") // light text
-	colorSubtext   = lipgloss.Color("#A6ADC8") // dimmer text
-	colorBorder    = lipgloss.Color("#45475A") // border
-	colorHighlight = lipgloss.Color("#F5C2E7") // pink highlight
+	"github.com/charmbracelet/lipgloss"
 )
 
-// Tab bar styles
+// Color palette inspired by lio.cat: amber accents on near-black in dark
+// terminals, cobalt blue accents in light terminals, no filled surfaces.
+var (
+	colorPrimary  = lipgloss.AdaptiveColor{Light: "#1447E6", Dark: "#FFB900"} // accent
+	colorOnAccent = lipgloss.AdaptiveColor{Light: "#FBBF24", Dark: "#121212"} // text drawn on the accent
+	colorSuccess  = lipgloss.AdaptiveColor{Light: "#15803D", Dark: "#86EFAC"}
+	colorWarning  = lipgloss.AdaptiveColor{Light: "#C2410C", Dark: "#FDBA74"}
+	colorError    = lipgloss.AdaptiveColor{Light: "#B91C1C", Dark: "#FCA5A5"}
+	colorInfo     = colorPrimary
+	colorMuted    = lipgloss.AdaptiveColor{Light: "#737373", Dark: "#6B6B6B"}
+	colorText     = lipgloss.AdaptiveColor{Light: "#121212", Dark: "#FFFFFF"}
+	colorSubtext  = lipgloss.AdaptiveColor{Light: "#404040", Dark: "#A3A3A3"}
+	colorBorder   = lipgloss.AdaptiveColor{Light: "#A3A3A3", Dark: "#2E2E2E"}
+)
+
+// dotSeparator joins inline items, mirroring the "a ⋅ b ⋅ c" lines on lio.cat.
+const dotSeparator = " ⋅ "
+
+// Tab bar styles: tabs render as plain lowercase links, the active one underlined.
 var (
 	tabActiveStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("#FFFFFF")).
-			Background(colorPrimary).
-			Padding(0, 2)
+			Underline(true).
+			Foreground(colorPrimary).
+			Transform(strings.ToLower).
+			MarginRight(3)
 
 	tabInactiveStyle = lipgloss.NewStyle().
 				Foreground(colorSubtext).
-				Background(colorSurface).
-				Padding(0, 2)
+				Transform(strings.ToLower).
+				MarginRight(3)
 
 	tabBarStyle = lipgloss.NewStyle().
-			Background(colorSurface).
 			PaddingLeft(1).
-			PaddingBottom(0)
+			PaddingTop(1).
+			PaddingBottom(1)
 )
 
 // Content styles
 var (
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(colorHighlight).
+			Foreground(colorText).
+			Transform(strings.ToLower).
 			MarginBottom(1)
 
 	subtitleStyle = lipgloss.NewStyle().
-			Foreground(colorSubtext).
-			Italic(true)
+			Foreground(colorSubtext)
 
 	labelStyle = lipgloss.NewStyle().
-			Foreground(colorInfo).
-			Bold(true).
+			Foreground(colorSubtext).
 			Width(24)
 
 	valueStyle = lipgloss.NewStyle().
 			Foreground(colorText)
 
-	sectionStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(colorBorder).
-			Padding(1, 2)
+	headingStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(colorPrimary).
+			Transform(strings.ToLower)
 
 	errorStyle = lipgloss.NewStyle().
 			Foreground(colorError).
@@ -74,19 +79,25 @@ var (
 			Foreground(colorWarning)
 
 	statusBarStyle = lipgloss.NewStyle().
-			Foreground(colorSubtext).
-			Background(colorSurface).
+			Foreground(colorMuted).
 			PaddingLeft(1).
 			PaddingRight(1)
 
 	helpStyle = lipgloss.NewStyle().
 			Foreground(colorMuted)
+
+	// accentBadgeStyle inverts the palette, e.g. amber block with dark text.
+	accentBadgeStyle = lipgloss.NewStyle().
+				Bold(true).
+				Foreground(colorOnAccent).
+				Background(colorPrimary).
+				Padding(0, 1)
 )
 
 // Log level styles
 var (
 	logDebugStyle = lipgloss.NewStyle().Foreground(colorMuted)
-	logInfoStyle  = lipgloss.NewStyle().Foreground(colorInfo)
+	logInfoStyle  = lipgloss.NewStyle().Foreground(colorSubtext)
 	logWarnStyle  = lipgloss.NewStyle().Foreground(colorWarning)
 	logErrorStyle = lipgloss.NewStyle().Foreground(colorError)
 )
@@ -95,7 +106,8 @@ var (
 var (
 	tableHeaderStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(colorHighlight).
+				Foreground(colorPrimary).
+				Transform(strings.ToLower).
 				BorderBottom(true).
 				BorderStyle(lipgloss.NormalBorder()).
 				BorderForeground(colorBorder)
@@ -105,7 +117,7 @@ var (
 			PaddingRight(2)
 
 	tableSelectedStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("#FFFFFF")).
+				Foreground(colorOnAccent).
 				Background(colorPrimary).
 				Bold(true)
 )

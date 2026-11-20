@@ -224,7 +224,7 @@ func (m authTabModel) renderContent() string {
 		rowStyle := lipgloss.NewStyle()
 		if i == m.cursor {
 			cursor = "▸ "
-			rowStyle = lipgloss.NewStyle().Bold(true)
+			rowStyle = lipgloss.NewStyle().Bold(true).Foreground(colorPrimary)
 		}
 
 		displayName := name
@@ -274,12 +274,11 @@ func (m authTabModel) renderDetail(f map[string]any) string {
 	var sb strings.Builder
 
 	labelStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("111")).
-		Bold(true)
+		Foreground(colorSubtext)
 	valueStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("252"))
+		Foreground(colorText)
 	editableMarker := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("214")).
+		Foreground(colorPrimary).
 		Render(" ✎")
 
 	sb.WriteString("    ┌─────────────────────────────────────────────\n")

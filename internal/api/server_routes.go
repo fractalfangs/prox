@@ -27,6 +27,7 @@ import (
 	"github.com/router-for-me/CLIProxyAPI/v8/internal/registry"
 	"github.com/router-for-me/CLIProxyAPI/v8/internal/runtime/executor/helps"
 	responsesclaude "github.com/router-for-me/CLIProxyAPI/v8/internal/translator/claude/openai/responses"
+	"github.com/router-for-me/CLIProxyAPI/v8/internal/webstyle"
 	"github.com/router-for-me/CLIProxyAPI/v8/sdk/api/handlers"
 	"github.com/router-for-me/CLIProxyAPI/v8/sdk/api/handlers/claude"
 	"github.com/router-for-me/CLIProxyAPI/v8/sdk/api/handlers/gemini"
@@ -37,7 +38,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const oauthCallbackSuccessHTML = `<html><head><meta charset="utf-8"><title>Authentication successful</title><script>setTimeout(function(){window.close();},5000);</script></head><body><h1>Authentication successful!</h1><p>You can close this window.</p><p>This window will close automatically in 5 seconds.</p></body></html>`
+const oauthCallbackSuccessHTML = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Authentication successful</title><style>` + webstyle.CSS + `</style><script>setTimeout(function(){window.close();},5000);</script></head><body><main><span class="brand">cliproxyapi</span><p class="tags"><b>oauth</b> ⋅ signed in</p><h1>Authentication successful!</h1><p>You can close this window.</p><p class="muted">This window will close automatically in 5 seconds.</p></main></body></html>`
 
 const codexAlphaSearchSourceFormat = "codex-alpha-search"
 

@@ -131,31 +131,10 @@ func (m dashboardModel) renderDashboard(cfg map[string]any, authFiles []map[stri
 	sb.WriteString(fmt.Sprintf("  %s", m.client.baseURL))
 	sb.WriteString("\n\n")
 
-	// ━━━ Stats Cards ━━━
-	cardWidth := 25
-	if m.width > 0 {
-		cardWidth = (m.width - 2) / 2
-		if cardWidth < 18 {
-			cardWidth = 18
-		}
-	}
-
-	cardStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("240")).
-		Padding(0, 1).
-		Width(cardWidth).
-		Height(2)
-
-	// Card 1: API Keys
+	// ━━━ Stats ━━━
+	// Rendered as a single "a ⋅ b" line instead of boxed cards.
+	countStyle := lipgloss.NewStyle().Bold(true).Foreground(colorPrimary)
 	keyCount := len(apiKeys)
-	card1 := cardStyle.Render(fmt.Sprintf(
-		"%s\n%s",
-		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("111")).Render(fmt.Sprintf("🔑 %d", keyCount)),
-		lipgloss.NewStyle().Foreground(colorMuted).Render(T("mgmt_keys")),
-	))
-
-	// Card 2: Auth Files
 	authCount := len(authFiles)
 	activeAuth := 0
 	for _, f := range authFiles {
@@ -163,19 +142,19 @@ func (m dashboardModel) renderDashboard(cfg map[string]any, authFiles []map[stri
 			activeAuth++
 		}
 	}
-	card2 := cardStyle.Render(fmt.Sprintf(
-		"%s\n%s",
-		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("76")).Render(fmt.Sprintf("📄 %d", authCount)),
-		lipgloss.NewStyle().Foreground(colorMuted).Render(fmt.Sprintf("%s (%d %s)", T("auth_files_label"), activeAuth, T("active_suffix"))),
-	))
-
-	sb.WriteString(lipgloss.JoinHorizontal(lipgloss.Top, card1, " ", card2))
+	sb.WriteString(countStyle.Render(fmt.Sprintf("%d", keyCount)))
+	sb.WriteString(" ")
+	sb.WriteString(subtitleStyle.Render(T("mgmt_keys")))
+	sb.WriteString(helpStyle.Render(dotSeparator))
+	sb.WriteString(countStyle.Render(fmt.Sprintf("%d", authCount)))
+	sb.WriteString(" ")
+	sb.WriteString(subtitleStyle.Render(fmt.Sprintf("%s (%d %s)", T("auth_files_label"), activeAuth, T("active_suffix"))))
 	sb.WriteString("\n\n")
 
 	// ━━━ Current Config ━━━
-	sb.WriteString(lipgloss.NewStyle().Bold(true).Foreground(colorHighlight).Render(T("current_config")))
+	sb.WriteString(headingStyle.Render(T("current_config")))
 	sb.WriteString("\n")
-	sb.WriteString(strings.Repeat("─", minInt(m.width, 60)))
+	sb.WriteString(lipgloss.NewStyle().Foreground(colorBorder).Render(strings.Repeat("─", minInt(m.width, 60))))
 	sb.WriteString("\n")
 
 	if cfg != nil {
