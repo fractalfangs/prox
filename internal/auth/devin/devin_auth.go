@@ -356,7 +356,7 @@ const loginSuccessHTML = `<!DOCTYPE html>
         <span class="brand">cliproxyapi</span>
         <p class="tags"><b>devin</b> ⋅ oauth ⋅ signed in</p>
         <h1>Authentication Complete</h1>
-        <p>You have successfully logged in to Devin via CLIProxyAPI.</p>
+        <p>You have successfully logged in to Devin via Styx Proxy.</p>
         <p class="muted">You may safely close this window and return to your terminal.</p>
     </main>
 </body>
